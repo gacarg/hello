@@ -113,23 +113,25 @@ fn quickselect(vec: &Vec<usize>, k: usize) -> usize {
     }
 }
 fn pig_latin(str: &String) -> String {
-    let mut answer: String = "start: ".to_string();
-
+    let mut answer: String = "".to_string();
     for word in str.split_whitespace() {
+        let mut n = 0;
         let mut second = word.chars();
-        let fist = word.chars().next().unwrap().to_string();
-        if fist == ("“") || fist == ("(") {
-            let mut fist = word.chars();
-            fist.next().unwrap().to_string();
-        }
-        if fist == ("a")
-            || fist == ("e")
-            || fist == ("y")
-            || fist == ("u")
-            || fist == ("i")
-            || fist == ("o")
+        let mut w = word.chars().next().unwrap().to_string();
+        if w == ("a")
+            || w == ("e")
+            || w == ("y")
+            || w == ("u")
+            || w == ("i")
+            || w == ("o")
+            || w == ("A")
+            || w == ("E")
+            || w == ("Y")
+            || w == ("U")
+            || w == ("I")
+            || w == ("O")
         {
-            for n in 0..word.chars().count() - 1 {
+            for n in 0..word.chars().count() {
                 answer.push_str(&second.next().unwrap().to_string());
             }
             answer.push_str("hay ");
@@ -138,16 +140,16 @@ fn pig_latin(str: &String) -> String {
             for n in 0..word.chars().count() - 1 {
                 answer.push_str(&second.next().unwrap().to_string());
             }
-            answer.push_str(&fist);
+            {
+                answer.push_str(&w);
+            }
             answer.push_str("ay ");
         }
     }
     answer
 }
 fn main() {
-    let text = "Given a list of integers, use a vector and return the median (when sorted, the value in the middle position) and mode (the value that occurs most often; a hash map will be helpful here) of the list.
-    Convert strings to pig latin. The first consonant of each word is moved to the end of the word and “ay” is added, so “first” becomes “irst-fay.” Words that start with a vowel have “hay” added to the end instead (“apple” becomes “apple-hay”). Keep in mind the details about UTF-8 encoding!
-    Using a hash map and vectors, create a text interface to allow a user to add employee names to a department in a company. For example, “Add Sally to Engineering” or “Add Amir to Sales.” Then let the user retrieve a list of all people in a department or all people in the company by department, sorted alphabetically.".to_string();
+    let text = "Another common use case for hash maps is to look up a key’s value and then update it based on the old value".to_string();
     print!("{}", pig_latin(&text))
     //let a = Vec::from([1, 2, 3]);
     //let m = find_summ(&a);
@@ -163,6 +165,12 @@ fn main() {
 #[cfg(test)]
 mod tests {
     use super::*;
+    #[test]
+    fn test_pig_latin() {
+        let m = pig_latin(&"Another common use".to_string());
+        print!("{}", m);
+        assert_eq!(m, " Anotherhay ommoncay usehay".to_string())
+    }
     #[test]
     fn test_median() {
         let a = Vec::from([
