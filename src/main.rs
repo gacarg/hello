@@ -1,4 +1,4 @@
-use std::collections::HashMap;
+use std::collections::{btree_map::Entry, HashMap};
 
 use random_number::random;
 
@@ -18,6 +18,28 @@ fn c_f(c: i32) -> i32 {
 fn print_vector(vec: Vec<u32>) {
     for n in 0..vec.len() {
         print!("{} {}", vec[n], " ")
+    }
+}
+#[derive(Debug)]
+struct company {
+    company: HashMap<String, Vec<String>>,
+}
+impl company {
+    fn new() -> Self {
+        Self {
+            company: HashMap::new(),
+        }
+    }
+    fn add_people(&mut self, name: String, department: String) {
+        let mut people = match self.company.remove(&department) {
+            Some(x) => x,
+            None => vec![],
+        };
+        people.push(name);
+        self.company.insert(department, people);
+    }
+    fn view_people(&self) {
+        println!("{:?}", self.company);
     }
 }
 fn twelve_days_of_christmas() {
@@ -149,7 +171,12 @@ fn pig_latin(str: &String) -> String {
     answer
 }
 fn main() {
-    let text = "Another common use case for hash maps is to look up a key’s value and then update it based on the old value".to_string();
+    let mut fizfack = company::new();
+    fizfack.add_people("mouse".to_string(), "mr Cat".to_string());
+    fizfack.add_people("Cat Kate".to_string(), "mr Cat".to_string());
+    fizfack.add_people("kudry".to_string(), "lap corpus".to_string());
+    fizfack.view_people();
+    let text = "Another common use".to_string();
     print!("{}", pig_latin(&text))
     //let a = Vec::from([1, 2, 3]);
     //let m = find_summ(&a);
@@ -169,7 +196,7 @@ mod tests {
     fn test_pig_latin() {
         let m = pig_latin(&"Another common use".to_string());
         print!("{}", m);
-        assert_eq!(m, " Anotherhay ommoncay usehay".to_string())
+        assert_eq!(m, "Anotherhay ommoncay usehay ".to_string())
     }
     #[test]
     fn test_median() {
